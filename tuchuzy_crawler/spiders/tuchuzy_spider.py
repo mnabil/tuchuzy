@@ -3,14 +3,18 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from tuchuzy_crawler.items import TuchuzyCrawlerItem
 import csv
+from pathlib import Path
 
 
 class MySpider(CrawlSpider):
     name = 'tuchuzy'
     allowed_domains = ['tuchuzy.com']
 
-    # Reading list of xpaths from CSV
-    with open("tuchuzy_crawler/spiders/spider_xpaths/{0}_xpath.csv".format(name), 'r') as f:
+    # getting full path of current dir
+    fpath = Path(__file__+'/..').resolve()
+    
+    #Reading CSV file into Dictionary (could also use Pandas)
+    with open("{0}/spider_xpaths/{1}_xpath.csv".format(fpath, name), 'r') as f:
         # reading xpath csv data into dictionary to use
         xpath_info = csv.DictReader(f)
         for row in xpath_info:
@@ -91,7 +95,7 @@ class MySpider(CrawlSpider):
 
 
 # NOTES
-# sitemaps in case we need sitemap crawler #SITEMAP IS A LOT FASTER THAN MOST CRAWLERS
+# sitemaps in case we need sitemap crawler #SITEMAP IS A LOT FASTER THAN MOST Approaches
 # https://www.tuchuzy.com/sitemap_products_1.xml?from=4125014982716&to=4126387863612
 # https://www.tuchuzy.com/sitemap_products_2.xml?from=4126388125756&to=6541721239612
 
